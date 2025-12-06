@@ -1,12 +1,9 @@
-import express, { Request, Response } from "express"
+import config from "./config";
+import app from "./app";
 
-const app = express();
-const port = 5000;
+const port = config.port;
 
-app.get('/', (req:Request, res:Response) => {
-  res.send('This is assignment no.2')
-})
 
 app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
+  console.log(`Vehicle Rental System listening on port ${port}`)
 })
