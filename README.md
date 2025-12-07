@@ -89,7 +89,7 @@ The server should now run at http://localhost:PORT
 5. DELETE /api/v1/vehicles/:vehicleId – Delete a vehicle if no active bookings (Admin only)
 ```
 
-### 3. Bookings
+### 4. Bookings
 ```POSTMAN
 1. POST /api/v1/bookings – Create a new booking (Customer/Admin)
 2. GET /api/v1/bookings – Retrieve bookings
