@@ -1,18 +1,14 @@
 import { Request, Response } from "express";
 import { bookingServices } from "./booking.service";
 
-// Create booking
 const createBooking = async (req: Request, res: Response) => {
   try {
     const user = req.user;
-    if (!user) return res.status(401).json({ message: "Unauthorized" });
+    if (!user || !user.id) {
+      return res.status(401).json({ success: false, message: "Unauthorized" });
+    }
 
-    const { vehicle_id, rent_start_date, rent_end_date } = req.body;
-
-    const booking = await bookingServices.createBooking(
-      { id: user.id, role: user.role },
-      { vehicle_id, rent_start_date, rent_end_date }
-    );
+    const booking = await bookingServices.createBooking(user, req.body);
 
     res.status(201).json({
       success: true,
@@ -27,16 +23,14 @@ const createBooking = async (req: Request, res: Response) => {
   }
 };
 
-// Get bookings
+
 const getBookings = async (req: Request, res: Response) => {
   try {
     const user = req.user;
-    if (!user) return res.status(401).json({ message: "Unauthorized" });
+    if (!user)
+      return res.status(401).json({ success: false, message: "Unauthorized" });
 
-    const result = await bookingServices.getBookings({
-      id: user.id,
-      role: user.role,
-    });
+    const bookings = await bookingServices.getBookings(user);
 
     res.status(200).json({
       success: true,
@@ -44,27 +38,24 @@ const getBookings = async (req: Request, res: Response) => {
         user.role === "admin"
           ? "Bookings retrieved successfully"
           : "Your bookings retrieved successfully",
-      data: result.rows,
+      data: bookings,
     });
   } catch (err: any) {
-    res.status(500).json({
-      success: false,
-      message: err.message,
-    });
+    res.status(500).json({ success: false, message: err.message });
   }
 };
 
-// Update booking
 const updateBooking = async (req: Request, res: Response) => {
   try {
     const user = req.user;
-    if (!user) return res.status(401).json({ message: "Unauthorized" });
+    if (!user)
+      return res.status(401).json({ success: false, message: "Unauthorized" });
 
     const bookingId = Number(req.params.bookingId);
     const { status } = req.body;
 
     const updatedBooking = await bookingServices.updateBooking(
-      { id: user.id, role: user.role },
+      user,
       bookingId,
       status
     );
@@ -78,10 +69,7 @@ const updateBooking = async (req: Request, res: Response) => {
       data: updatedBooking,
     });
   } catch (err: any) {
-    res.status(400).json({
-      success: false,
-      message: err.message,
-    });
+    res.status(400).json({ success: false, message: err.message });
   }
 };
 

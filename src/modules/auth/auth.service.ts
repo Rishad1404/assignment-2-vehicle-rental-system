@@ -19,12 +19,12 @@ const signinUser = async (email: string, password: string) => {
   }
 
   const token = jwt.sign(
-    { name: user.name, role: user.role, email: user.email },
+    { id: user.id, name: user.name, role: user.role, email: user.email },
     config.jwtSecret as string,
     { expiresIn: "30d" }
   );
 
-  console.log({ token });
+  // console.log({ token });
 
   return { token, user };
 };
@@ -54,11 +54,10 @@ const signupUser = async (
   const user = result.rows[0];
 
   const token = jwt.sign(
-    { name: user.name, role: user.role, email: user.email },
+    { id: user.id, name: user.name, role: user.role, email: user.email },
     config.jwtSecret as string,
     { expiresIn: "30d" }
   );
-
   return { token, user };
 };
 
