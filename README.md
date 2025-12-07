@@ -1,6 +1,6 @@
 # Assignment-2-Vehicle-Rental-System
 
-**Live URL:** [(https://assignment-2-vehicle-rental-system.vercel.app/)](#)
+**Live URL:** [https://assignment-2-vehicle-rental-system.vercel.app/](#)
 
 ---
 
