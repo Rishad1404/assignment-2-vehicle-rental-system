@@ -23,12 +23,12 @@ const createBooking = async (req: Request, res: Response) => {
   }
 };
 
-
 const getBookings = async (req: Request, res: Response) => {
   try {
     const user = req.user;
-    if (!user)
+    if (!user || !user.id) {
       return res.status(401).json({ success: false, message: "Unauthorized" });
+    }
 
     const bookings = await bookingServices.getBookings(user);
 
@@ -48,8 +48,9 @@ const getBookings = async (req: Request, res: Response) => {
 const updateBooking = async (req: Request, res: Response) => {
   try {
     const user = req.user;
-    if (!user)
+    if (!user || !user.id) {
       return res.status(401).json({ success: false, message: "Unauthorized" });
+    }
 
     const bookingId = Number(req.params.bookingId);
     const { status } = req.body;
